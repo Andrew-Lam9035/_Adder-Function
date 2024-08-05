@@ -1,0 +1,44 @@
+_adder:
+    push ebp                                  ;Saves ebp to the stack
+    mov ebp, esp                           ;Make ebp point to the same register as esp
+
+    mov eax, DWORD[ebp+16]      ;Put the value of x into eax
+    mov ebx, DWORD[ebp+12]     ;Put the value of y into ebx
+    add eax, ebx                             ;Add eax and ebx together and put the value in eax
+    mov ebx, DWORD[ebp+8]     ;Put the value of z into ebx
+    add eax, ebx                             ;Add eax from the last one with the new value of ebx together
+                                                        ;and put the value into eax
+
+    mov [result], eax                       ;Put the value of eax into result to return 
+
+    leave                                           
+    ret                                               ;Leave the function and returns control
+
+section .text
+        global _start
+
+_start:
+
+    mov eax, [x]
+    push    eax                                  ;Push eax with the variable x to the function
+
+    mov eax, [y]
+    push    eax                                 ;Push eax with the variable y to the function
+
+    mov eax, [z]
+    push    eax                                ;Push eax with the variable z to the function
+
+    call    _adder
+
+    mov  eax, 1
+    int     0x80
+
+segment .bss
+
+    result resb 1
+
+segment .data
+
+    x dd 10                                          ;Assign any integers to the three variables
+    y dd 15
+    z dd 20
